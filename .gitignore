@@ -6,6 +6,8 @@
 # Node artifact files
 node_modules/
 dist/
+.vscode/
+src/config/private-config.json
 
 # Compiled Java class files
 *.class

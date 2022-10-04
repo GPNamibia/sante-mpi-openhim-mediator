@@ -1,0 +1,49 @@
+{
+    "urn": "urn:mediator:odkcentral_update_media",
+    "version": "1.0.0",
+    "name": "ODK Central update media files Ptracker Mediator",
+    "description": "This mediator is intended for retrieving submission data from ODK Central,and update media files on ODK Central.",
+    "defaultChannelConfig": [{
+        "name": "ODK Central update media files Ptracker Mediator",
+        "urlPattern": "^/ptracker_update_media_files$",
+        "routes": [{
+            "name": "ODK Central update media files Ptracker Mediator Route",
+            "host": "ptracker_update_media_files",
+            "path": "/",
+            "port": "8000",
+            "primary": true,
+            "type": "http"
+        }],
+        "allow": ["admin"],
+        "methods": ["GET", "PATCH"],
+        "type": "http"
+    }],
+    "endpoints": [{
+        "name": "ODK Central update media files Ptracker Mediator Endpoint",
+        "host": "ptracker_update_media_files",
+        "path": "/",
+        "port": "8000",
+        "primary": false,
+        "type": "http"
+    }],
+    "configDefs": [{
+        "param": "odkCentralPtrackerParams",
+        "displayName": "ODK Central update media files variables",
+        "description": "Variables to define ODK Central update media files retrieval query",
+        "type": "struct",
+        "array": false,
+        "template": [{
+                "param": "processing_days",
+                "displayName": "Days",
+                "description": "Number of Days since the record were last processed",
+                "type": "number"
+            },
+            {
+                "param": "nr_of_records",
+                "displayName": "Records",
+                "description": "Number of Records to process",
+                "type": "number"
+            }
+        ]
+    }]
+}

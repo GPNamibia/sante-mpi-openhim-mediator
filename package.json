@@ -1,0 +1,43 @@
+{
+    "name": "odk-central-update-media-files",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "nodemon --experimental-json-modules src/index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.27.2",
+        "basic-auth": "^2.0.1",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.2",
+        "fast-csv": "^4.3.6",
+        "fhir": "^4.11.1",
+        "flat": "^5.0.2",
+        "fs": "^0.0.1-security",
+        "mysql": "^2.18.1",
+        "mysql-ssh": "^1.0.6",
+        "mysql2": "^2.3.3",
+        "node-cron": "^3.0.0",
+        "openhim-core": "^4.0.5",
+        "openhim-mediator-utils": "^0.2.4",
+        "path": "^0.12.7",
+        "path-posix": "^1.0.0",
+        "qs": "^6.11.0",
+        "querystring": "^0.2.1",
+        "request": "^2.88.2",
+        "ssh2": "^1.11.0",
+        "ssh2-sftp-client": "^9.0.4",
+        "tunnel-ssh": "^4.1.6"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15",
+        "sequelize": "^6.16.1",
+        "sequelize-cli": "^6.4.1"
+    }
+}
