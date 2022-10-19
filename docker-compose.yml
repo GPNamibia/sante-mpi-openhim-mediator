@@ -1,0 +1,65 @@
+version: '3'
+services:
+  mongo:
+    container_name: openhim-mongo
+    restart: unless-stopped
+    volumes:
+      - "mongo-db:/data/db"
+      - "mongo-config-db:/data/configdb"
+    ports:
+      - "127.0.0.1:27016:27017"
+    image: mongo:3.4
+
+  core:
+    container_name: openhim-core
+    image: jembi/openhim-core
+    restart: unless-stopped
+    environment:
+      - mongo_url=mongodb://mongo/openhim
+      - mongo_atnaUrl=mongodb://mongo/openhim
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:5001:5001"
+      - "127.0.0.1:5050:5050"
+      - "127.0.0.1:5051:5051"
+      - "127.0.0.1:5052:5052"
+      - "127.0.0.1:7788:7788"
+    healthcheck:
+      test: "curl -sSk https://openhim-core:8080/heartbeat || exit 1"
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    depends_on:
+      - mongo
+
+  console:
+    container_name: openhim-console
+    image: jembi/openhim-console
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:80"
+    healthcheck:
+      test: "curl -sS http://openhim-console || exit 1"
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    # volumes:
+    #   - ./default.json:/usr/share/nginx/html/config/default.json
+
+  sante-mpi-mediator:
+    container_name: sante_mpi_mediator
+    build:
+      ./
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+
+volumes:
+  mongo-db:
+  mongo-config-db:
+networks:
+  default:
+    name: openHIM
+    external: true
+      
