@@ -6,7 +6,7 @@ const createPatient = async (patientBody, res) => {
   return new Promise(async (resolve, reject) => {
     try {
       //Acces token
-      const accessToken = await access_token.getAccessTokenCredentialGrant();
+      const accessToken = req.headers.authorization;
       //call post api
       await santeAPI.POST(patientBody, accessToken).then(async (response) => {
         return resolve(response);
@@ -56,7 +56,7 @@ const POST = async (req, res) => {
 const GET = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const accessToken = await access_token.getAccessTokenCredentialGrant();
+      const accessToken = req.headers.authorization;
       let url = req._parsedUrl.search;
       console.log(url)
       //call get api
@@ -77,7 +77,7 @@ const GET = async (req, res) => {
 const getSimilar = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const accessToken = await access_token.getAccessTokenCredentialGrant();
+      const accessToken = req.headers.authorization;
       let url = req.params.id;
       //call get api
       await santeAPI.getSimilar(accessToken, url).then(async (response) => {
@@ -97,7 +97,7 @@ const PUT = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
       //Acces token
-      const accessToken = await access_token.getAccessTokenCredentialGrant();
+      const accessToken = req.headers.authorization;
       //call post api
       await santeAPI.PUT(req.body, accessToken,req.params.id).then(async (response) => {
         // return resolve(response);
@@ -116,7 +116,7 @@ const merge = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
       //Acces token
-      const accessToken = await access_token.getAccessTokenCredentialGrant();
+      const accessToken = req.headers.authorization;
       //call post api
       await santeAPI.merge(req.body, accessToken).then(async (response) => {
         // return resolve(response);
