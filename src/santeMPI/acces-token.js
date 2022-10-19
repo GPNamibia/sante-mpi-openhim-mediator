@@ -18,7 +18,7 @@ const getAccessTokenPasswordGrant = async (username, password) => {
         //call get token api
         await santeAPI.getTokenPassword(data).then((res) => {
             console.log("Bearer "+res.access_token)
-            return resolve("Bearer " + res.access_token);
+            return resolve(res);
         }).catch(error=>{
             return resolve(error);
         })
