@@ -1,12 +1,11 @@
 const access_token = require('../santeMPI/acces-token');
 const { SanteAPI } = require("../santeMPI/sante-mpi-api");
 const santeAPI = new SanteAPI();
+const privateConfig = require('../config/private-config.json');
 
-const createPatient = async (patientBody, res) => {
+const createPatient = async (patientBody, res,accessToken) => {
   return new Promise(async (resolve, reject) => {
     try {
-      //Acces token
-      const accessToken = req.headers.authorization;
       //call post api
       await santeAPI.POST(patientBody, accessToken).then(async (response) => {
         return resolve(response);
@@ -21,15 +20,30 @@ const createPatient = async (patientBody, res) => {
 const userAuthentication = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (Object.keys(req.body).length !== 0) {
-        await access_token.getAccessTokenPasswordGrant(req.body.username, req.body.password).then((response) => {
+      //Extracting user auth headers
+      const username = req.headers.username;
+      const password = req.headers.password;
+      const client_id = req.headers.client_id;
+      const client_secret = req.headers.client_secret;
+      const grant_type = req.headers.grant_type;
+      //check the grant type
+      if (grant_type == privateConfig.santeMpiConfig.grant_type_p) {
+        await access_token.getAccessTokenPasswordGrant(username, password, client_id, client_secret, grant_type).then((response) => {
           // console.log(response)
           res.status(200).send(response)
           return resolve(response);
         }).catch(error => {
           res.status(400).send(error)
         })
-      } else { res.status(500).send("No FHIR body specified") }
+      } else if (grant_type == privateConfig.santeMpiConfig.grant_type) {
+        await access_token.getAccessTokenCredentialGrant(client_id, client_secret, grant_type).then((response) => {
+          // console.log(response)
+          res.status(200).send(response)
+          return resolve(response);
+        }).catch(error => {
+          res.status(400).send(error)
+        })
+      }
     } catch (error) {
       res.status(400).send(error)
       throw error;
@@ -40,7 +54,9 @@ const userAuthentication = async (req, res) => {
 const POST = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
-      createPatient(req.body, res).then((response) => {
+      //Acces token
+      const accessToken = req.headers.authorization;
+      createPatient(req.body, res,accessToken).then((response) => {
         res.status(200).send(response)
         return response;
       }).catch(error => {
@@ -99,7 +115,7 @@ const PUT = async (req, res) => {
       //Acces token
       const accessToken = req.headers.authorization;
       //call post api
-      await santeAPI.PUT(req.body, accessToken,req.params.id).then(async (response) => {
+      await santeAPI.PUT(req.body, accessToken, req.params.id).then(async (response) => {
         // return resolve(response);
         res.status(200).send(response)
       }).catch(error => {
