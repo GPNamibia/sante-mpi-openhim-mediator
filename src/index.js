@@ -12,14 +12,15 @@ app.use(express.urlencoded({ extended: true }))
 
 // routers
 const router = require('./routes/apiRouter')
-app.use('/api', router)
+// app.use('/api', router)
 
 
 //openHIM
 getQueryParameters();
 
-app.get('/api', async (req, res) => {
+app.get('/api',router, async (req, res) => {
     // Starts when a new request is triggered by the polling channel
+    res.status(res.statusCode).send(res.body);
     console.log(`\n---------------------------------------------------------------------------------`,
         `\n${new Date().toUTCString('en-GB', { timeZone: 'UTC' })}  - `,
         `The ODK Central EBS has received a new request. \n`

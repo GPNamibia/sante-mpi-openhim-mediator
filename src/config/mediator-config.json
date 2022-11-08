@@ -1,14 +1,14 @@
 {
-    "urn": "urn:mediator:sante_mpi_mediator",
+    "urn": "urn:mediator:sante-mpi-mediator",
     "version": "1.0.0",
     "name": "santMPI Mediator",
     "description": "This mediator is intended sending request to sante mpi server",
     "defaultChannelConfig": [{
         "name": "santeMPI Mediator",
-        "urlPattern": "^/sante_mpi_mediator$",
+        "urlPattern": "^/sante-mpi-mediator$",
         "routes": [{
             "name": "santMPI Mediator Route",
-            "host": "sante_mpi_mediator",
+            "host": "sante-mpi-mediator",
             "path": "/",
             "port": "8000",
             "primary": true,
@@ -20,7 +20,7 @@
     }],
     "endpoints": [{
         "name": "santMPI Mediator Endpoint",
-        "host": "sante_mpi_mediator",
+        "host": "sante-mpi-mediator",
         "path": "/",
         "port": "8000",
         "primary": false,

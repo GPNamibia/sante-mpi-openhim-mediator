@@ -48,12 +48,12 @@ services:
     #   - ./default.json:/usr/share/nginx/html/config/default.json
 
   sante-mpi-mediator:
-    container_name: sante_mpi_mediator
+    container_name: sante-mpi-mediator
     build:
       ./
     ports:
-      - "127.0.0.1:8000:8000"
-    restart: unless-stopped
+     - "127.0.0.1:8000:8000"
+    restart: always
 
 volumes:
   mongo-db:
