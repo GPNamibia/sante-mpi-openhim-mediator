@@ -12,23 +12,21 @@ app.use(express.urlencoded({ extended: true }))
 
 // routers
 const router = require('./routes/apiRouter')
-// app.use('/api', router)
-
-
-//openHIM
-getQueryParameters();
-
-app.get('/api',router, async (req, res) => {
-    // Starts when a new request is triggered by the polling channel
-    res.status(res.statusCode).send(res.body);
-    console.log(`\n---------------------------------------------------------------------------------`,
-        `\n${new Date().toUTCString('en-GB', { timeZone: 'UTC' })}  - `,
-        `The ODK Central EBS has received a new request. \n`
-    );
+app.use('/api', router)
+app.all('*', (req, res) => {
+    try {
+        // Starts when a new request is received by the server
+        res.send(`${new Date().toUTCString('en-GB', { timeZone: 'UTC' })} : The Sante Endpoint Mediator has received ${req.method} request. \n`);
+    } catch (error) {
+        // Starts when a new request is received by the server
+        res.send(error);
+    }
 });
 
 //Server PORT
 app.listen(privateConfig.appConfig.PORT, (err) => {
     if (err) console.log(`Error: ${err}`)
     console.log(`${privateConfig.appConfig.mediatorName}  listening on port ${privateConfig.appConfig.PORT}...  \n`);
+    //openHIM
+    getQueryParameters();
 })
