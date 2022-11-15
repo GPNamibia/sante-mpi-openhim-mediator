@@ -21,11 +21,12 @@ const userAuthentication = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
       //Extracting user auth headers
-      const username = req.headers.username;
-      const password = req.headers.password;
-      const client_id = req.headers.client_id;
-      const client_secret = req.headers.client_secret;
-      const grant_type = req.headers.grant_type;
+      const username = req.body.headers.username;
+      const password = req.body.headers.password;
+      const client_id = req.body.headers.client_id;
+      const client_secret = req.body.headers.client_secret;
+      const grant_type = req.body.headers.grant_type;
+
       //check the grant type
       if (grant_type == privateConfig.santeMpiConfig.grant_type_p) {
         await access_token.getAccessTokenPasswordGrant(username, password, client_id, client_secret, grant_type).then((response) => {
