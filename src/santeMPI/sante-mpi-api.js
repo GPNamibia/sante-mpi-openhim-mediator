@@ -3,6 +3,7 @@ const qs = require("qs");
 const axios = require('axios');
 const config = privateConfig.odkCentralConfig;
 const instance = axios.create({ baseURL: privateConfig.santeMpiConfig.apiURL });
+const openHimInstance = axios.create({ baseURL: privateConfig.santeMpiConfig.santApiURL });
 
 class SanteAPI {
   constructor() { }
@@ -17,6 +18,7 @@ class SanteAPI {
         password: data.password,
       },
     });
+    openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 
@@ -30,6 +32,7 @@ class SanteAPI {
         password: data.client_secret,
       },
     });
+    openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 
@@ -42,6 +45,7 @@ class SanteAPI {
           'Content-Type': 'application/fhir+json'
         },
       });
+      openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
       return response.data;
     } else {
       const response = await instance.get(`fhir/Patient`, {
@@ -51,6 +55,7 @@ class SanteAPI {
           'Content-Type': 'application/fhir+json'
         },
       });
+      openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
       return response.data;
     }
   }
@@ -63,6 +68,7 @@ class SanteAPI {
         'Content-Type': 'application/fhir+json'
       },
     });
+    openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 
@@ -74,6 +80,7 @@ class SanteAPI {
         'Content-Type': 'application/fhir+json'
       },
     });
+    openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 
@@ -85,6 +92,7 @@ class SanteAPI {
         'Content-Type': 'application/fhir+json'
       },
     });
+    openHimInstance.put(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 
@@ -96,6 +104,7 @@ class SanteAPI {
         'Content-Type': 'application/fhir+json'
       },
     });
+    openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
     return response.data;
   }
 }
