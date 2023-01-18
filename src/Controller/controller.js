@@ -6,6 +6,8 @@ const privateConfig = require('../config/private-config.json');
 const createPatient = async (patientBody, res,accessToken) => {
   return new Promise(async (resolve, reject) => {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
       //call post api
       await santeAPI.POST(patientBody, accessToken).then(async (response) => {
         return resolve(response);
@@ -20,6 +22,8 @@ const createPatient = async (patientBody, res,accessToken) => {
 const userAuthentication = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
       //Extracting user auth headers
       const username = req.body.headers.username;
       const password = req.body.headers.password;
@@ -55,6 +59,8 @@ const userAuthentication = async (req, res) => {
 const POST = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
       //Acces token
       const accessToken = req.headers.authorization;
       createPatient(req.body, res,accessToken).then((response) => {
@@ -73,6 +79,11 @@ const POST = async (req, res) => {
 const GET = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
+      
       const accessToken = req.headers.authorization;
       let url = req._parsedUrl.search;
       console.log(url)
@@ -94,6 +105,9 @@ const GET = async (req, res) => {
 const getSimilar = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
+      //Acces token
       const accessToken = req.headers.authorization;
       let url = req.params.id;
       //call get api
@@ -113,6 +127,8 @@ const getSimilar = async (req, res) => {
 const PUT = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
       //Acces token
       const accessToken = req.headers.authorization;
       //call post api
@@ -132,6 +148,8 @@ const PUT = async (req, res) => {
 const merge = async (req, res) => {
   if (Object.keys(req.body).length !== 0) {
     try {
+      //set content type to fhir
+      res.setHeader('Content-Type', 'application/fhir+json');
       //Acces token
       const accessToken = req.headers.authorization;
       //call post api
