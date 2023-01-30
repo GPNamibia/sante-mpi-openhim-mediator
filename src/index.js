@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 app.use(express.json())
 app.use(cors());
 app.use(express.urlencoded({ extended: true }))
+// parse the request body as JSON
+app.use(bodyParser.json({ type: 'application/fhir+json' }));
 
 // routers
 const router = require('./routes/apiRouter')

@@ -81,9 +81,6 @@ const GET = async (req, res) => {
     try {
       //set content type to fhir
       res.setHeader('Content-Type', 'application/fhir+json');
-      //set content type to fhir
-      res.setHeader('Content-Type', 'application/fhir+json');
-      
       const accessToken = req.headers.authorization;
       let url = req._parsedUrl.search;
       console.log(url)
