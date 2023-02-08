@@ -73,15 +73,80 @@ class SanteAPI {
   }
 
   async POST(newFhirPatient, accessToken) {
-    const response = await instance.post(`fhir/Patient`, newFhirPatient, {
-      headers: {
-        Authorization: `${accessToken}`,
-        Accept: 'application/fhir+json',
-        'Content-Type': 'application/fhir+json'
-      },
-    });
-    openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
-    return response.data;
+    var found = false;
+    var resp = {};
+    
+    if (newFhirPatient.identifier){
+      for (var i=0; i<newFhirPatient.identifier.length; i++){
+        var ident = newFhirPatient.identifier[i];
+        let url = '?identifier='+ident.system+'|'+ident.value+'&_count=1'; 
+        const response = await instance.get(`fhir/Patient${url}`, {
+            headers: {
+              Authorization: `${accessToken}`,
+              Accept: 'application/fhir+json',
+              'Content-Type': 'application/fhir+json'
+            },
+        });
+        openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
+        resp = response.data;
+        if (resp.total != 0)
+        {
+          found = true;
+          break;
+        }
+      } 
+    }
+
+    if (found == false) {
+      let url ='?';
+      if (newFhirPatient.name[0]['family'] != null){
+        url += 'family='+newFhirPatient.name[0]['family']+'&';
+      }
+      if (newFhirPatient.name[0]['given'] != null){
+        url += 'given='+newFhirPatient.name[0]['given']+'&';
+      }
+      if (newFhirPatient.birthDate != null){
+        url += 'birthdate='+newFhirPatient.birthDate+'&';
+      }
+      if (newFhirPatient.gender != null){
+        url += 'gender='+newFhirPatient.gender;
+      }
+
+      url += '&_count=1';
+
+      console.log(url);
+
+      const response = await instance.get(`fhir/Patient${url}`, {
+          headers: {
+            Authorization: `${accessToken}`,
+            Accept: 'application/fhir+json',
+            'Content-Type': 'application/fhir+json'
+          },
+      });
+      openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
+      resp = response.data;
+      if (resp.total != 0)
+      {
+        found = true;
+      }
+    }
+    
+    if (found == true)
+    {
+      return resp;
+    }
+    else
+    {
+      const response = await instance.post(`fhir/Patient`, newFhirPatient, {
+        headers: {
+          Authorization: `${accessToken}`,
+          Accept: 'application/fhir+json',
+          'Content-Type': 'application/fhir+json'
+        },
+      });
+      openHimInstance.post(privateConfig.santeMpiConfig.santApiURL,{});
+      return response.data;
+    }
   }
 
   async PUT(newFhirPatient, accessToken, id) {
