@@ -4,6 +4,8 @@ const axios = require('axios');
 const config = privateConfig.odkCentralConfig;
 const instance = axios.create({ baseURL: privateConfig.santeMpiConfig.apiURL });
 const openHimInstance = axios.create({ baseURL: privateConfig.santeMpiConfig.santApiURL });
+const _ = require('lodash');
+const json_functions = require("../functions/functions.js");
 
 class SanteAPI {
   constructor() { }
@@ -150,7 +152,23 @@ class SanteAPI {
   }
 
   async PUT(newFhirPatient, accessToken, id) {
-    const response = await instance.put(`fhir/Patient/${id}`, newFhirPatient, {
+    const get_response = await instance.get(`fhir/Patient/${id}`, {
+      headers: {
+        Authorization: `${accessToken}`,
+        Accept: 'application/fhir+json',
+        'Content-Type': 'application/fhir+json'
+      },
+    });
+    openHimInstance.get(privateConfig.santeMpiConfig.santApiURL,{});
+    var get_resp = get_response.data;
+
+    var main_patient_resource =  json_functions.alter_patient_resource(get_resp,'add_system');
+
+    var updated_patient_resource = json_functions.alter_patient_resource(json_functions.remove_health_id(newFhirPatient),'add_system');
+
+    var new_patient_resource = json_functions.alter_patient_resource(_.merge(main_patient_resource, updated_patient_resource),'remove_system');
+
+    const response = await instance.put(`fhir/Patient/${id}`, new_patient_resource, {
       headers: {
         Authorization: `${accessToken}`,
         Accept: 'application/fhir+json',
